@@ -1,0 +1,56 @@
+
+hostname IOS-R2
+
+interface Loopback0
+ description MAIN-LOOPBACK
+ ip address 2.2.2.2 255.255.255.255
+
+
+interface Loopback2
+ description LOOP2-AD
+ ip address 2.2.2.1 255.255.255.255
+
+interface Loopback3
+ description LOOP3-AD
+ ip address 2.2.3.1 255.255.255.255
+
+
+interface GigabitEthernet0/0
+ description IOS-XR-R1___IOS-R2
+ no shutdown
+ ip address 10.1.2.2 255.255.255.0
+ ip router isis 1
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+
+interface GigabitEthernet0/1
+ description IOS-R2___IOS-R3
+ no shutdown
+ ip address 10.2.3.2 255.255.255.0
+ ip router isis 1
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+
+
+interface GigabitEthernet0/2
+ description IOS-R2___L2-SW-6__NET3
+ no shutdown
+ ip address 192.168.3.1 255.255.255.0
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+
+router isis 1
+ net 00.0000.0000.0002.00
+ is-type level-2-only
+ metric-style narrow
+ passive-interface Loopback0
+ passive-interface Loopback2
+ passive-interface Loopback3
+ passive-interface GigabitEthernet0/3
+ mpls ldp autoconfig
